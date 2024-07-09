@@ -6,6 +6,7 @@ import base64
 
 app = Flask(__name__)
 
+# Database connection
 db = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -14,9 +15,10 @@ db = mysql.connector.connect(
 )
 cursor = db.cursor()
 
+# Face recognition setup
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-recognizer.read('trainer/trainer.yml')  # Assuming trainer.yml is present in trainer directory
+recognizer.read('trainer/trainer.yml')  # Ensure trainer.yml is in the correct path
 
 @app.route('/')
 def index():
@@ -42,7 +44,7 @@ def recognize():
     for (x, y, w, h) in faces:
         id, confidence = recognizer.predict(gray[y:y+h, x:x+w])
         if confidence < 100:
-            cursor.execute("SELECT username FROM test3 WHERE id = %s", (id,))
+            cursor.execute("SELECT username FROM test3 WHERE user_id = %s", (id,))
             user = cursor.fetchone()
             name = user[0] if user else "Unknown"
             confidence = f"  {round(100 - confidence)}%"

@@ -35,8 +35,7 @@
       var dataUrl = canvas.toDataURL('image/jpeg');
       console.log('Captured image:', dataUrl);
 
-      // Temporary CORS workaround for development (replace with proper CORS setup)
-      fetch('http://localhost:5000/recognize', {
+      fetch('http://127.0.0.1:5001/recognize', {
         method: 'POST',
         body: JSON.stringify({ image: dataUrl }),
         headers: {
@@ -57,6 +56,5 @@
       });
     });
   </script>
-    
 </body>
 </html>
